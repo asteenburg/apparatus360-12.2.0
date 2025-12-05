@@ -1,4 +1,4 @@
-// app/checklist/page.tsx (or wherever your component is located)
+// app/checklist/page.tsx
 "use client";
 
 import Nav from "../Nav";
@@ -20,33 +20,26 @@ export default function CheckListPage() {
     exportPDF,
     message,
     isSaving,
-    TRUCKS, // Get TRUCKS from the hook
-  } = useChecklist(); // 💥 CORRECTED: Use the hook here
+    TRUCKS,
+    clearMessage, // <-- 🟢 CORRECTION: Import the new clearMessage function
+  } = useChecklist();
 
-  const closeModal = () => {
-    // 💥 CORRECTION: This function is required to clear the message state
-    // but the `message` state lives in the hook, so we need to export a setter or function.
-    // Assuming you add `setMessage` to the hook's return object:
-    // return { ..., setMessage };
-    
-    // For now, we'll assume the message is cleared by the handleReset logic after success/failure
-    // or by adding a function to the hook:
-    // const clearMessage = useCallback(() => setMessage(null), []);
-    // and using that here. Since you didn't provide that, I'll update the modal logic.
-    // We'll rely on the modal close button for simplicity.
-  };
+  // ❌ REMOVED: The unused closeModal function is gone.
 
   return (
     <>
-      {/* 💥 Main content wrapper. Add pb-16 to prevent content from being hidden by the fixed bottom nav. */}
-  
+      <Nav />
+      {/* 🟢 Ensure proper bottom padding to accommodate Nav or fixed elements */}
       <main className="flex-1 flex-cols bg-gray-100 dark:bg-gray-950 min-h-screen transition-colors duration-300 pb-20"> 
         <div className="max-w-4xl mt-6 mx-auto">
           
           {/* --- Message Modal --- */}
           {message && (
-            // 💥 CORRECTION: Use a prop to close the modal instead of relying on an empty onClick handler
-            <div className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center p-4" onClick={closeModal}> 
+            // 🟢 CORRECTED: Use clearMessage to close the modal when clicking the backdrop
+            <div 
+              className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center p-4" 
+              onClick={clearMessage}
+            > 
               <div
                 className={`p-6 rounded-xl shadow-2xl max-w-sm w-full ${
                   message.type === "success" ? "bg-green-500" : "bg-red-500"
@@ -55,8 +48,11 @@ export default function CheckListPage() {
               >
                 <p className="font-bold text-lg mb-2">{message.type === "success" ? "Success!" : "Error!"}</p>
                 <p>{message.text}</p>
-                {/* Add a close handler to the button. Need `clearMessage` exported from hook. */}
-                <button className="mt-4 text-sm font-semibold" onClick={handleReset}> 
+                {/* 🟢 CORRECTED: Use clearMessage to close when clicking the button */}
+                <button 
+                  className="mt-4 text-sm font-semibold" 
+                  onClick={clearMessage}
+                > 
                   Close
                 </button>
               </div>
@@ -83,7 +79,6 @@ export default function CheckListPage() {
                 Select Vehicle
               </h2>
               <div className="flex flex-wrap gap-2 sm:gap-3">
-                {/* 💥 CORRECTION: TRUCKS is now correctly accessed from the hook */}
                 {TRUCKS.map((truck) => (
                   <button
                     key={truck.id}

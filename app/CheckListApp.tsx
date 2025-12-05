@@ -41,6 +41,9 @@ export default function CheckListApp() {
 
   const currentChecklistData = useMemo(() => CHECKLIST_MAP[selectedTruck]?.checklist || [], [selectedTruck]);
 
+  // New function to simply clear the message state
+  const clearMessage = useCallback(() => setMessage(null), []);
+
   const handleTruckSelect = useCallback((truckId: number) => {
     setSelectedTruck(truckId);
     setChecklistState(createInitialChecklistState(CHECKLIST_MAP[truckId]?.checklist || []));
@@ -185,5 +188,6 @@ export default function CheckListApp() {
     exportPDF,
     message,
     isSaving,
+    clearMessage, // <-- NEW: Exported to allow external modal closing
   };
 }
