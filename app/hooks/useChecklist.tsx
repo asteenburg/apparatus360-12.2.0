@@ -5,8 +5,8 @@ import { useState, useCallback, useMemo } from "react";
 import { jsPDF } from 'jspdf';
 import trucksData from '../../data/trucks.json';
 import truck341Checklist from '../../data/truck341.json';
-import truck342Checklist from '@/data/truck342.json';
-import truck344Checklist from '@/data/truck344.json';
+import truck342Checklist from '../../data/truck342.json';
+import truck344Checklist from '../../data/truck344.json';
 
 // --- TYPE DEFINITIONS ---
 type Truck = { id: number; name: string; }; // 💥 CORRECTION: Added Truck type for TRUCKS array
