@@ -1,7 +1,5 @@
 // app/checklist/page.tsx
 "use client";
-
-import Nav from "../Nav";
 import { useChecklist } from "@/app/hooks/useChecklist"; // Adjust path as needed
 
 export default function CheckListPage() {
@@ -21,14 +19,11 @@ export default function CheckListPage() {
     message,
     isSaving,
     TRUCKS,
-    clearMessage, // <-- 🟢 CORRECTION: Import the new clearMessage function
+    clearMessage, 
   } = useChecklist();
-
-  // ❌ REMOVED: The unused closeModal function is gone.
 
   return (
     <>
-      <Nav />
       {/* 🟢 Ensure proper bottom padding to accommodate Nav or fixed elements */}
       <main className="flex-1 flex-cols bg-gray-100 dark:bg-gray-950 min-h-screen transition-colors duration-300 pb-20"> 
         <div className="max-w-4xl mt-6 mx-auto">
