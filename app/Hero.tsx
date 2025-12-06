@@ -28,7 +28,11 @@ export default function Hero() {
           <i className="fa-solid fa-arrow-right-to-bracket mr-3"></i>
           Get Started
         </Link>
+        <span className="ml-16 px-4 py-2 text-sm font-semibold rounded-full bg-white/10 backdrop-blur border border-white/20">
+            v1.0.0
+          </span>
       </div>
+      
     </section>
   );
 }
