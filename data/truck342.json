@@ -1,27 +1,64 @@
 {
-	"checklist": [
-		{
-			"title": "Driver Side",
-			"items": []
-		},
-		{
-			"title": "Compartment 1",
-			"items": ["AED", "First Aid Kit", "Fire Extinguisher"]
-		},
-		{
-			"title": "Rear Compartment",
-			"items": ["Charlie Lines x2", "Cones", "Hydrant Bag", "Oclansorbe"]
-		},
-		{
-			"title": "Engine",
-			"items": [
-				"Oil Level",
-				"Coolant Level",
-				"Washer Fluid",
-				"Belts, hoses",
-				"Transmission Fluid",
-				"Battery Condition"
-			]
-		}
-	]
-}
+  "checklist": [
+    {
+      "id": "driver-side",
+      "title": "Driver Side",
+      "compartments": [
+        {
+          "id": "compartment-1-d",
+          "title": "Compartment 1",
+          "items": [
+            "AED",
+            "First Aid Kit",
+            "Fire Extinguisher"
+          ]
+        },
+        {
+          "id": "compartment-2-d",
+          "title": "Compartment 2",
+          "items": [
+            "Traffic Vests x4",
+            "Scene Tape",
+            "Flashlight"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "passenger-side",
+      "title": "Passenger Side",
+      "compartments": [
+      {
+        "id": "compartment-1-p",
+        "title": "Compartment 1",
+        "items": [
+          "Hydraulic Rescue Tools",
+          "Spare Bottles",
+          "Irons",
+          "Spare Airpack",
+          "Light Tower"
+        ]
+      }
+	  ]
+	},
+	{
+        "id": "engine",
+        "title": "Engine",
+        "compartments": [
+			{
+		  "id": "engine-check",
+		  "title": "Engine Check",
+        "items": [				
+        "Oil Level",
+              "Coolant Level",
+              "Washer Fluid",
+              "Belts, hoses",
+              "Transmission Fluid",
+              "Battery Condition"
+        ]
+          }
+        ]
+      }
+    ]
+  }
+
