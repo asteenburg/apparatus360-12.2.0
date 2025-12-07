@@ -1,9 +1,9 @@
 export default function InfoCard() {
   return (
     // Right-side floating info card (Desktop View)
-    <div className="absolute top-17 right-10 z-30 hidden lg:flex flex-col w-80 bg-white rounded-2xl shadow-2xl text-left p-6 card-glow mx-6 mt-6 overflow-hidden">
+    <div className="absolute top-17 right-10 z-30 hidden lg:flex flex-col w-80 bg-white rounded-xl shadow-2xl text-left p-6 card-glow mx-6 mt-6 overflow-hidden">
       <div className="m-6">
-        <h1 className="text-xl text-gray-800 font-semibold uppercase mt-2 flex items-center justify-left">
+        <h1 className="text-xl text-gray-800 text-left font-semibold uppercase mt-2 flex justify-left">
           <i className="fa-solid fa-fire-flame-curved text-xl pr-3 text-red-500"></i>
           Built by Firefighters
         </h1>
@@ -16,7 +16,7 @@ export default function InfoCard() {
         keeping quality in mind.
       </p>
 
-      <div className="mt-4 relative h-72">
+      <div className="mt-4 relative h-52">
         <img
           src="/images/data.png"
           alt="Apparatus360 Checklist Screenshot"

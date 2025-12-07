@@ -141,7 +141,7 @@ export default function InspectionDashboard() {
 
     // 5. JSX Rendering (Using the <Bar> component)
     return (
-        <div className="p-6 max-w-5xl mx-auto">
+        <div className="p-6 max-w-5xl mt-10 mx-auto">
             <h2 className="text-3xl font-bold my-6 text-gray-800">📊 Inspection Dashboard</h2>
 
             {/* Chart Area */}

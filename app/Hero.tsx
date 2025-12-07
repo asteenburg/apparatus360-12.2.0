@@ -23,14 +23,15 @@ export default function Hero() {
 
         <Link
           href="/hub"
-          className="inline-flex items-center justify-center px-8 py-3 sm:px-10 sm:py-4 border border-transparent text-lg sm:text-xl font-medium rounded-full shadow-lg text-white bg-red-600 hover:bg-red-700 transition duration-300 transform hover:scale-105 active:scale-95 animate-bounce-slow"
+          className="inline-flex items-center justify-center px-8 py-3 sm:px-10 sm:py-4 border border-transparent text-lg sm:text-xl font-medium rounded-md shadow-lg text-white bg-red-600 hover:bg-red-700 transition duration-300 transform hover:scale-105 active:scale-95 animate-bounce-slow"
         >
           <i className="fa-solid fa-arrow-right-to-bracket mr-3"></i>
           Get Started
         </Link>
-        <span className="ml-16 px-4 py-2 text-sm font-semibold rounded-full bg-white/10 backdrop-blur border border-white/20">
-           Beta v1.0.0
-          </span>
+        <span className="ml-16 px-4 py-2 text-sm font-semibold rounded-md bg-white/10 backdrop-blur border border-white/20">
+           Beta v1.0.0 - 
+           <Link href="/notes" className="underline hover:text-red-400 ml-1">Release Notes</Link>
+        </span>
       </div>
       
     </section>

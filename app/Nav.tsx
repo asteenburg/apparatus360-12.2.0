@@ -17,9 +17,9 @@ export default function Nav() {
   ];
 
   return (
-    <nav className="bg-gray-800 p-4 shadow-lg">
+    <nav className="absolute top-0 left-0 z-50 w-full p-4 shadow-md">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
-        <span className="text-xl font-bold text-white">Truck Inspections</span>
+        <span className="text-xl font-bold text-gray-500"><Link href="/">Truck Inspections</Link></span>
         <div className="flex space-x-4">
           {links.map((link) => {
             // Check if the current pathname matches the link's href
@@ -27,7 +27,7 @@ export default function Nav() {
             
             const classes = isActive 
               ? "bg-blue-600 text-white font-bold" // Active link styling
-              : "text-gray-300 hover:bg-gray-700 hover:text-white";
+              : "text-gray-600 hover:bg-gray-700 hover:text-white";
 
             return (
               <Link 

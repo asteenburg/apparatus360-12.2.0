@@ -1,48 +1,69 @@
 "use client";
 
-import { useState, useCallback, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { jsPDF } from "jspdf";
-import trucksData from "@/data/trucks.json";
 import truck341Checklist from "@/data/truck341.json";
 import truck342Checklist from "@/data/truck342.json";
-import truck344Checklist from "@/data/truck344.json";
+import trucksData from "@/data/trucks.json";
 
-type ChecklistItem = { status: "Defect" | "OK"; notes: string; checkTimestamp: string | null };
-type ChecklistState = Record<string, ChecklistItem>;
-type ChecklistSection = { title: string; items: string[] };
+export type ChecklistItem = {
+  status: "Defect" | "OK";
+  notes: string;
+  checkTimestamp: string | null;
+};
 
-const CHECKLIST_MAP: Record<number, { checklist: ChecklistSection[] }> = {
+export type ChecklistCompartment = {
+  id: string;
+  title: string;
+  items: string[];
+};
+
+export type ChecklistSide = {
+  id: string;
+  title: string;
+  compartments: ChecklistCompartment[];
+};
+
+export type ChecklistState = Record<string, ChecklistItem>;
+
+const CHECKLIST_MAP: Record<number, { checklist: ChecklistSide[] }> = {
   341: truck341Checklist,
   342: truck342Checklist,
-  344: truck344Checklist,
 };
 
 const TRUCKS = trucksData.trucks;
-const DEFAULT_TRUCK_ID = TRUCKS[0]?.id || 341;
+const DEFAULT_TRUCK_ID = TRUCKS[0]?.id || 341; 342;
 
-const createInitialChecklistState = (data: ChecklistSection[]): ChecklistState => {
-  const state: ChecklistState = {};
-  data.forEach((section) =>
-    section.items.forEach((item) => {
-      state[item] = { status: "Defect", notes: "", checkTimestamp: null };
-    })
-  );
-  return state;
-};
-
-export default function CheckListApp() {
+export default function useChecklist() {
   const [selectedTruck, setSelectedTruck] = useState<number>(DEFAULT_TRUCK_ID);
   const [inspectorName, setInspectorName] = useState("");
   const [checklistState, setChecklistState] = useState<ChecklistState>(() =>
     createInitialChecklistState(CHECKLIST_MAP[DEFAULT_TRUCK_ID].checklist)
   );
+  const [openSections, setOpenSections] = useState<Record<string, boolean>>({});
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
   const [isSaving, setIsSaving] = useState(false);
 
-  const currentChecklistData = useMemo(() => CHECKLIST_MAP[selectedTruck]?.checklist || [], [selectedTruck]);
+  const currentChecklistData = useMemo(
+    () => CHECKLIST_MAP[selectedTruck]?.checklist || [],
+    [selectedTruck]
+  );
 
-  // New function to simply clear the message state
-  const clearMessage = useCallback(() => setMessage(null), []);
+  function createInitialChecklistState(data: ChecklistSide[]): ChecklistState {
+    const state: ChecklistState = {};
+    data.forEach((side) =>
+      side.compartments.forEach((compartment) =>
+        compartment.items.forEach((item) => {
+          state[item] = { status: "Defect", notes: "", checkTimestamp: null };
+        })
+      )
+    );
+    return state;
+  }
+
+  const toggleSection = useCallback((id: string) => {
+    setOpenSections((prev) => ({ ...prev, [id]: !prev[id] }));
+  }, []);
 
   const handleTruckSelect = useCallback((truckId: number) => {
     setSelectedTruck(truckId);
@@ -69,10 +90,12 @@ export default function CheckListApp() {
 
   const handleSelectAll = () => {
     const newState: ChecklistState = {};
-    currentChecklistData.forEach((section) =>
-      section.items.forEach((item) => {
-        newState[item] = { ...checklistState[item], status: "OK", checkTimestamp: new Date().toISOString() };
-      })
+    currentChecklistData.forEach((side) =>
+      side.compartments.forEach((compartment) =>
+        compartment.items.forEach((item) => {
+          newState[item] = { ...checklistState[item], status: "OK", checkTimestamp: new Date().toISOString() };
+        })
+      )
     );
     setChecklistState(newState);
   };
@@ -133,39 +156,46 @@ export default function CheckListApp() {
     pdf.text(`Date: ${timestamp}`, 10, y);
     y += 10;
 
-    currentChecklistData.forEach((section) => {
+    currentChecklistData.forEach((side) => {
       pdf.setFontSize(14);
-      pdf.text(section.title, 10, y);
+      pdf.text(side.title, 10, y);
       y += 7;
 
-      section.items.forEach((item) => {
-        const itemData = checklistState[item];
-        if (!itemData) return;
-
-        const statusText = itemData.status === "OK" ? "PASS" : "DEFECT";
-        const statusColor = itemData.status === "OK" ? "#10B981" : "#EF4444";
-
-        pdf.setFillColor(statusColor);
-        pdf.circle(12, y - 3, 1, "F");
-        pdf.setFontSize(11);
-        pdf.text(`  ${item} - ${statusText}`, 15, y);
-        y += 5;
-
-        if (itemData.notes.trim()) {
-          pdf.setFontSize(10);
-          pdf.text(`   Notes: ${itemData.notes}`, 15, y);
-          y += 5;
-        }
-
-        const time = itemData.checkTimestamp ? new Date(itemData.checkTimestamp).toLocaleTimeString() : "—";
-        pdf.setFontSize(10);
-        pdf.text(`   Time: ${time}`, 15, y);
+      side.compartments.forEach((compartment) => {
+        pdf.setFontSize(12);
+        pdf.text(compartment.title, 12, y);
         y += 6;
 
-        if (y > 270) {
-          pdf.addPage();
-          y = 10;
-        }
+        compartment.items.forEach((item) => {
+          const itemData = checklistState[item];
+          if (!itemData) return;
+
+          const statusText = itemData.status === "OK" ? "PASS" : "DEFECT";
+          const statusColor = itemData.status === "OK" ? "#10B981" : "#EF4444";
+
+          pdf.setFillColor(statusColor);
+          pdf.circle(14, y - 3, 1, "F");
+          pdf.setFontSize(11);
+          pdf.text(`  ${item} - ${statusText}`, 15, y);
+          y += 5;
+
+          if (itemData.notes.trim()) {
+            pdf.setFontSize(10);
+            pdf.text(`   Notes: ${itemData.notes}`, 15, y);
+            y += 5;
+          }
+
+          const time = itemData.checkTimestamp ? new Date(itemData.checkTimestamp).toLocaleTimeString() : "—";
+          pdf.setFontSize(10);
+          pdf.text(`   Time: ${time}`, 15, y);
+          y += 6;
+
+          if (y > 270) {
+            pdf.addPage();
+            y = 10;
+          }
+        });
+        y += 5;
       });
       y += 5;
     });
@@ -188,6 +218,8 @@ export default function CheckListApp() {
     exportPDF,
     message,
     isSaving,
-    clearMessage, // <-- NEW: Exported to allow external modal closing
+    openSections,
+    toggleSection,
+    TRUCKS,
   };
 }

@@ -1,6 +1,10 @@
-// app/checklist/page.tsx
 "use client";
-import { useChecklist } from "@/app/hooks/useChecklist"; // Adjust path as needed
+
+import Nav from "../Nav";
+import useChecklist from "../CheckListApp";
+import trucksData from "@/data/trucks.json";
+
+const TRUCKS = trucksData.trucks;
 
 export default function CheckListPage() {
   const {
@@ -18,186 +22,182 @@ export default function CheckListPage() {
     exportPDF,
     message,
     isSaving,
-    TRUCKS,
-    clearMessage, 
+    openSections,
+    toggleSection,
   } = useChecklist();
 
   return (
     <>
-      {/* 🟢 Ensure proper bottom padding to accommodate Nav or fixed elements */}
-      <main className="flex-1 flex-cols bg-gray-100 dark:bg-gray-950 min-h-screen transition-colors duration-300 pb-20"> 
-        <div className="max-w-4xl mt-6 mx-auto">
-          
-          {/* --- Message Modal --- */}
-          {message && (
-            // 🟢 CORRECTED: Use clearMessage to close the modal when clicking the backdrop
-            <div 
-              className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center p-4" 
-              onClick={clearMessage}
-            > 
-              <div
-                className={`p-6 rounded-xl shadow-2xl max-w-sm w-full ${
-                  message.type === "success" ? "bg-green-500" : "bg-red-500"
-                } text-white text-center`}
-                onClick={(e) => e.stopPropagation()} // Prevents closing when clicking inside modal
-              >
-                <p className="font-bold text-lg mb-2">{message.type === "success" ? "Success!" : "Error!"}</p>
-                <p>{message.text}</p>
-                {/* 🟢 CORRECTED: Use clearMessage to close when clicking the button */}
-                <button 
-                  className="mt-4 text-sm font-semibold" 
-                  onClick={clearMessage}
-                > 
-                  Close
-                </button>
-              </div>
-            </div>
-          )}
-
-          {/* ... The rest of your UI content remains here ... */}
-          <section className="mb-6 md:mb-8">
-            <div className="bg-white dark:bg-gray-950 rounded-2xl shadow-2xl text-center p-6 sm:p-10 md:p-12 card-glow">
-              <h1 className="text-3xl sm:text-4xl md:text-6xl font-extrabold uppercase mb-2 text-gray-800 dark:text-white">
-                Daily Inspection
-              </h1>
-              <p className="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-400 mt-2 flex items-center justify-center">
-                Mandatory Pre-Trip and Post-Trip Checks
-                <i className="fa-solid fa-truck-moving text-xl sm:text-2xl pl-3 text-blue-500"></i>
+      <Nav />
+      <main className="flex-1 min-w-60 bg-gray-100 dark:bg-white min-h-screen p-6 pb-20 max-w-4xl mx-auto">
+        {/* Message Modal */}
+        {message && (
+          <div
+            className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center p-4"
+            onClick={() => null}
+          >
+            <div
+              className={`p-6 rounded-xl shadow-2xl max-w-sm w-full ${
+                message.type === "success" ? "bg-green-500" : "bg-red-500"
+              } text-white text-center`}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <p className="font-bold text-lg mb-2">
+                {message.type === "success" ? "Success!" : "Error!"}
               </p>
+              <p>{message.text}</p>
             </div>
-          </section>
+          </div>
+        )}
 
-          <section className="bg-white dark:bg-gray-800 rounded-2xl p-5 sm:p-7 md:p-8 shadow-xl">
-            {/* --- Vehicle Selection --- */}
-            <div className="mb-4 sm:mb-6 border-b border-gray-200 dark:border-gray-700 pb-3 sm:pb-4">
-              <h2 className="text-base sm:text-lg font-bold text-gray-700 dark:text-gray-300 mb-2 uppercase">
-                Select Vehicle
-              </h2>
-              <div className="flex flex-wrap gap-2 sm:gap-3">
-                {TRUCKS.map((truck) => (
-                  <button
-                    key={truck.id}
-                    onClick={() => handleTruckSelect(truck.id)}
-                    className={`px-5 py-2 rounded-full font-semibold transition-colors duration-150 transform hover:scale-[1.03] ${
-                      selectedTruck === truck.id
-                        ? "bg-blue-600 text-white shadow-lg"
-                        : "bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600"
-                    }`}
-                  >
-                    {truck.name}
-                  </button>
-                ))}
-              </div>
-            </div>
+        {/* Truck Selection */}
+        <section className="mb-6 mt-20">
+          <h2 className="text-lg font-bold text-gray-800 mb-2 uppercase">
+            Select Vehicle
+          </h2>
+          <div className="flex flex-wrap gap-2 sm:gap-3">
+            {TRUCKS.map((truck) => (
+              <button
+                key={truck.id}
+                onClick={() => handleTruckSelect(truck.id)}
+                className={`px-5 py-2 rounded-md font-semibold transition-colors duration-150 transform hover:scale-[1.03] ${
+                  selectedTruck === truck.id
+                    ? "bg-blue-600 text-white shadow-lg"
+                    : "bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600"
+                }`}
+              >
+                {truck.name}
+              </button>
+            ))}
+          </div>
+        </section>
 
-            {/* --- Form and Checklist --- */}
-            <form onSubmit={handleSubmit}>
-              <input type="hidden" value={selectedTruck} readOnly />
-              <div className="bg-gray-50 dark:bg-gray-700 p-4 sm:p-5 md:p-6 rounded-xl border border-gray-200 dark:border-gray-600 mb-6">
-                <label htmlFor="inspector-name" className="block text-gray-800 dark:text-white font-bold mb-1 sm:mb-2">
-                  <i className="fa-solid fa-user-check pr-2"></i>
-                  Inspector Name <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  id="inspector-name"
-                  value={inspectorName}
-                  onChange={(e) => setInspectorName(e.target.value)}
-                  required
-                  className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 focus:outline-none focus:ring-4 focus:ring-blue-500/50 dark:bg-gray-900 dark:text-white"
-                  placeholder="Enter your full name or ID"
-                />
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 pt-4 border-t border-gray-200 dark:border-gray-600">
-                  <h2 className="text-lg sm:text-xl font-bold text-gray-800 dark:text-white flex items-center">
-                    <i className="fa-solid fa-list-check pr-3 text-blue-500"></i>
-                    Items to Inspect
-                  </h2>
-                  <button
-                    type="button"
-                    onClick={handleSelectAll}
-                    className="px-4 py-2 sm:px-5 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition transform hover:scale-105 shadow-md"
-                  >
-                    <i className="fa-solid fa-check-double mr-2"></i>
-                    Check All (OK)
-                  </button>
+        {/* Inspector Name */}
+        <section className="mb-6">
+          <label className="block text-gray-800 font-bold mb-2">
+            Inspector Name <span className="text-red-500">*</span>
+          </label>
+          <input
+            type="text"
+            value={inspectorName}
+            onChange={(e) => setInspectorName(e.target.value)}
+            placeholder="Enter your full name or ID"
+            className="w-full border border-gray-300 dark:border-gray-600 rounded-sm px-3 py-2 focus:outline-none focus:ring-4 focus:ring-blue-500/50 dark:bg-gray-900 dark:text-white"
+          />
+        </section>
+
+        {/* Driver/Passenger Sections */}
+        {currentChecklistData.map((side) => {
+          const isSideOpen = openSections[side.id];
+          return (
+            <div key={side.id} className="mb-4 rounded-sm bg-white shadow-lg">
+              <button
+                type="button"
+                onClick={() => toggleSection(side.id)}
+                className="w-full text-left p-4 font-bold text-white white bg-gray-700 rounded-t-md hover:bg-gray-200 dark:hover:bg-gray-600 transition"
+              >
+                {side.title}
+              </button>
+
+              {isSideOpen && (
+                <div className="pl-4 pt-2 pb-4">
+                  {side.compartments.map((compartment) => {
+                    const isCompOpen = openSections[compartment.id];
+                    return (
+                      <div
+                        key={compartment.id}
+                        className="mb-3 border rounded-sm bg-gray-50 shadow-sm"
+                      >
+                        <button
+                          type="button"
+                          onClick={() => toggleSection(compartment.id)}
+                          className="w-full text-left px-4 py-2 font-semibold text-gray-500 rounded-t-sm transition"
+                        ><span className="fa-solid fa-plus p-4"></span>
+                          {compartment.title}
+                        </button>
+
+                        {isCompOpen && (
+                          <div className="pl-4 pr-4 pt-2 pb-3 space-y-3">
+                            {compartment.items.length > 0 ? (
+                              compartment.items.map((item) => (
+                                <div
+                                  key={item}
+                                  className={`flex items-center gap-3 p-2 rounded-lg ${
+                                    checklistState[item]?.status === "OK"
+                                      ? "bg-green-50 dark:bg-green-900/50"
+                                      : "hover:bg-gray-100 dark:hover:bg-gray-600/50"
+                                  }`}
+                                >
+
+                                  {/* Checkbox */}
+                                  <input
+                                    type="checkbox"
+                                    checked={checklistState[item]?.status === "OK"}
+                                    onChange={(e) => handleCheck(item, e.target.checked)}
+                                    className="w-5 h-5 text-green-600 border-gray-300 rounded focus:ring-green-500 dark:bg-gray-900 dark:border-gray-600"
+                                  />
+                                  <span className="flex-1 text-gray-700 text-black">
+                                    {item}
+                                  </span>
+
+                                  {/*} Notes Input */}
+                                  <input
+                                    type="text"
+                                    value={checklistState[item]?.notes || ""}
+                                    onChange={(e) => handleNotesChange(item, e.target.value)}
+                                    placeholder="Notes"
+                                    className="flex-1 border border-gray-500 rounded-lg px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300 text-black"
+                                  />
+                                </div>
+                              ))
+                            ) : (
+                              <div className="italic text-gray-500 dark:text-gray-400 p-2">
+                                No items in this compartment
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
-              </div>
+              )}
+            </div>
+          );
+        })}
 
-              {/* --- Checklist Items --- */}
-              <div className="space-y-4 sm:space-y-6">
-                {currentChecklistData.map((section, i) => (
-                  <div
-                    key={`${section.title}-${i}`}
-                    className="mb-6 p-4 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-700 shadow-lg"
-                  >
-                    <h3 className="font-extrabold mb-3 text-xl uppercase text-gray-600 dark:text-gray-300 pb-2 border-b border-gray-100 dark:border-gray-600">
-                      {section.title}
-                    </h3>
-                    {section.items.map((item, j) => {
-                      const itemData = checklistState[item];
-                      if (!itemData) return null;
-                      const isChecked = itemData.status === "OK";
-                      return (
-                        <div
-                          key={`${section.title}-${item}-${j}`}
-                          className={`flex items-center py-3 px-3 mb-1 gap-4 flex-wrap border-b border-gray-100 dark:border-gray-700 rounded ${
-                            isChecked ? "bg-green-50/50 dark:bg-gray-600/50" : "hover:bg-gray-50 dark:hover:bg-gray-700/80"
-                          }`}
-                        >
-                          <label htmlFor={`check-${item}`} className="flex items-center gap-3 cursor-pointer flex-shrink-0">
-                            <input
-                              type="checkbox"
-                              id={`check-${item}`}
-                              checked={isChecked}
-                              onChange={(e) => handleCheck(item, e.target.checked)}
-                              className="w-5 h-5 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500 dark:bg-gray-900 dark:border-gray-600"
-                            />
-                            <span className="font-medium text-gray-700 dark:text-gray-300">{item}</span>
-                          </label>
-                          <input
-                            type="text"
-                            value={itemData.notes}
-                            onChange={(e) => handleNotesChange(item, e.target.value)}
-                            placeholder="Defect Notes / Maintenance Required..."
-                            className="flex-1 border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-1 text-sm hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-300 dark:bg-gray-900 dark:text-white min-w-40"
-                          />
-                        </div>
-                      );
-                    })}
-                  </div>
-                ))}
-              </div>
-
-              {/* --- Action Buttons --- */}
-              <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 pt-5 sm:pt-6 border-t border-gray-200 dark:border-gray-700">
-                <button
-                  type="submit"
-                  disabled={isSaving || !inspectorName.trim()}
-                  className="w-full sm:flex-1 px-6 py-3 bg-red-600 text-white font-bold uppercase rounded-xl hover:bg-red-700 transition transform hover:scale-[1.01] shadow-lg disabled:opacity-50 disabled:hover:scale-100"
-                >
-                  <i className={`mr-2 ${isSaving ? "fa-solid fa-spinner fa-spin" : "fa-solid fa-floppy-disk"}`}></i>
-                  {isSaving ? "Saving..." : "Submit Inspection"}
-                </button>
-                <button
-                  type="button"
-                  onClick={handleReset}
-                  className="w-full sm:flex-1 px-6 py-3 bg-gray-500 text-white font-bold uppercase rounded-xl hover:bg-gray-600 transition shadow-md"
-                >
-                  <i className="fa-solid fa-rotate-left mr-2"></i>
-                  Reset Form
-                </button>
-                <button
-                  type="button"
-                  onClick={exportPDF}
-                  disabled={!inspectorName.trim()}
-                  className="w-full sm:flex-1 px-6 py-3 bg-blue-600 text-white font-bold uppercase rounded-xl hover:bg-blue-700 transition shadow-lg disabled:opacity-50"
-                >
-                  <i className="fa-solid fa-file-pdf mr-2"></i>
-                  Export PDF
-                </button>
-              </div>
-            </form>
-          </section>
+        {/* Action Buttons */}
+        <div className="flex flex-col sm:flex-row gap-3 mt-6">
+          <button
+            type="submit"
+            onClick={handleSubmit}
+            disabled={isSaving || !inspectorName.trim()}
+            className="flex-1 px-4 py-2 bg-red-600 text-white font-bold uppercase rounded-md hover:bg-red-700 transition shadow-lg disabled:opacity-100"
+          >
+            {isSaving ? "Saving..." : "Submit"}
+          </button>
+          <button
+            type="button"
+            onClick={handleReset}
+            className="flex-1 px-4 py-2 bg-gray-500 text-white font-bold uppercase rounded-md hover:bg-gray-600 transition shadow-md"
+          >
+            Reset Form
+          </button>
+          <button
+            type="button"
+            onClick={exportPDF}
+            disabled={!inspectorName.trim()}
+            className="flex-1 px-4 py-2 bg-blue-600 text-white font-bold uppercase rounded-md hover:bg-blue-700 transition shadow-lg disabled:opacity-50"
+          >
+            Export PDF
+          </button>
+          <button
+            type="button"
+            onClick={handleSelectAll}
+            className="flex-1 px-4 py-2 bg-green-600 text-white font-bold uppercase rounded-md hover:bg-green-700 transition shadow-lg"
+          >
+            Check All
+          </button>
         </div>
       </main>
     </>

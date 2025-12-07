@@ -28,7 +28,7 @@ export default function hub() {
                     <div className="flex justify-start lg:justify-end">
                         <a href="/checklist"
                             className="w-full sm:w-auto inline-flex items-center justify-center px-6 sm:px-8 py-3 
-                                   text-base sm:text-lg font-medium rounded-full shadow-lg text-white 
+                                   text-base sm:text-lg font-medium rounded-md shadow-lg text-white 
                                    bg-red-600 hover:bg-red-500 transition duration-300 transform hover:scale-105 active:scale-95">
                             <i className="fa-solid fa-file-signature mr-3"></i>
                             Start New Checklist
