@@ -37,7 +37,8 @@ export default function NotesPage() {
                         <li
                             className="p-4 bg-gray-50 rounded-lg border border-gray-200 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
                             <p className="text-gray-700 font-medium text-sm">Beta release v1.0.0</p>
-                            <p className="text-gray-700 font-medium text-sm">Added checklist items to dropdown menus making it cleaner and more organized.<br/>
+                            <p className="text-gray-700 font-medium text-sm">Initial release<br/>
+                            Added checklist items to dropdown menus making it cleaner and more organized.<br/>
                             Added release notes section</p>
                             <span className="text-sm text-gray-500 font-semibold">12/06/25</span>
                         </li>
