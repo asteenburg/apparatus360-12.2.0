@@ -20,7 +20,7 @@ export default function Nav() {
     <nav className="absolute top-0 left-0 z-50 w-full p-4 shadow-md">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         <span className="text-xl font-bold text-gray-500"><Link href="/">Truck Inspections</Link></span>
-        <div className="flex md:space-x-4 space-x-2">
+        <div className="flex md:space-x-4 space-x-0 flex-wrap">
           {links.map((link) => {
             // Check if the current pathname matches the link's href
             const isActive = pathname === link.href;
