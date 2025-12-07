@@ -1,19 +1,18 @@
 export default function InfoCard() {
   return (
     // Right-side floating info card (Desktop View)
-    <div className="absolute top-17 right-10 z-30 hidden lg:flex flex-col w-80 bg-white rounded-xl shadow-2xl text-left p-6 card-glow mx-6 mt-6 overflow-hidden">
+    <div className="absolute top-17 right-10 z-30 hidden lg:flex flex-col w-80 bg-transparent rounded-md text-left p-6 card-glow mx-6 mt-6 overflow-hidden">
       <div className="m-6">
-        <h1 className="text-xl text-gray-800 text-left font-semibold uppercase mt-2 flex justify-left">
+        <h1 className="text-xl text-gray-300 text-left font-semibold uppercase mt-2 flex justify-left">
           <i className="fa-solid fa-fire-flame-curved text-xl pr-3 text-red-500"></i>
           Built by Firefighters
         </h1>
       </div>
 
-      <p className="text-sm text-gray-600">
-        Most of the site was hand-coded, but a majority of the complex
-        features were built using AI technology. Although, we are still
-        learning, we also find value in productivity to deploy quickly while
-        keeping quality in mind.
+      <p className="text-sm text-gray-300">
+        Most of the site was hand-coded such as HTML elements, Tailwind CSS, and some Javascript, but a majority of the complex features
+          were built by leveraging the power of AI to create React and Typescript components within NEXT.js framework. We still take pride in designing every feature to
+          look and function exactly the way we want.
       </p>
 
       <div className="mt-4 relative h-52">

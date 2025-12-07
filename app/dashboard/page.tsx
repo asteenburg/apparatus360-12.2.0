@@ -1,6 +1,5 @@
 'use client';
 
-import Nav from '../Nav';
 import { useState, useEffect, useMemo } from 'react';
 // 1. Import the Bar component and required Chart.js features
 import { Bar } from 'react-chartjs-2';
@@ -95,7 +94,7 @@ export default function InspectionDashboard() {
             { 
                 label: "OK", 
                 data: processedData.okCounts, 
-                backgroundColor: "rgba(16, 185, 129, 0.7)", // Tailwind green-500 equivalent
+                backgroundColor: "rgba(69, 187, 242, 0.68)", // Tailwind green-500 equivalent
             },
             { 
                 label: "Defect", 
@@ -142,7 +141,7 @@ export default function InspectionDashboard() {
     // 5. JSX Rendering (Using the <Bar> component)
     return (
         <div className="p-6 max-w-5xl mt-10 mx-auto">
-            <h2 className="text-3xl font-bold my-6 text-gray-800">📊 Inspection Dashboard</h2>
+            <h2 className="text-3xl font-bold my-6 text-gray-800"><i className="fa-solid fa-chart-simple"></i> Inspection Dashboard</h2>
 
             {/* Chart Area */}
             <div className="bg-white p-6 rounded-xl shadow-2xl mb-8 border border-gray-100">
@@ -150,7 +149,7 @@ export default function InspectionDashboard() {
                 <Bar options={chartOptions} data={chartData} /> 
             </div>
             
-            <h3 className="text-2xl font-semibold mb-4 text-gray-700">📋 Recent Inspections</h3>
+            <h3 className="text-2xl font-semibold mb-4 text-gray-700"><i className="fa-solid fa-clipboard-list"></i> Recent Inspections</h3>
             
             {/* Table Area */}
             <div className="overflow-x-auto bg-white rounded-xl shadow-2xl border border-gray-100">

@@ -25,7 +25,7 @@ export default function NotesPage() {
                 </header>
 
                 {/* MAIN CONTENT */}
-                <div className="bg-white shadow-lg rounded-xl p-5 sm:p-6">
+                <div className="bg-gray-100 shadow-lg rounded-xl p-5 sm:p-6">
 
                     <h2 className="text-xl sm:text-2xl font-bold mb-4 text-gray-800 border-b pb-2">
                         <i className="fa-solid fa-sticky-note mr-2 text-red-500"></i>

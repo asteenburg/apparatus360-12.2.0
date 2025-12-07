@@ -10,8 +10,8 @@ export default function MobileInfoCard() {
         </div>
 
         <p className="text-sm">
-          Most of the site was hand-coded, but a majority of the complex features
-          were built using AI. We still take pride in designing every feature to
+          Most of the site was hand-coded such as HTML elements, Tailwind CSS, and some Javascript, but a majority of the complex features
+          were built by leveraging the power of AI to create React and Typescript components within NEXT.js framework. We still take pride in designing every feature to
           look and function exactly the way we want.
         </p>
 

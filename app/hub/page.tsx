@@ -1,9 +1,7 @@
-import DarkModeRibbon from '../../components/DarkModeRibbon';
-
 export default function hub() {
     return (
-    <main className="py-8 sm:py-12 mt-6 flex-grow">
-        <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+    <main className="py-8 sm:py-12 mt-0 flex-grow bg-gray-100">
+        <div className="max-w-7xl mx-auto px-2 mt-12 sm:px-6 lg:px-8">
 
             {/* HEADER */}
             <header className="bg-white shadow-xl rounded-2xl p-6 sm:p-8 mb-10">

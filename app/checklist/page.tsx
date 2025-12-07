@@ -27,9 +27,9 @@ export default function CheckListPage() {
   } = useChecklist();
 
   return (
-    <>
+    <div className="bg-gray-100">
       <Nav />
-      <main className="flex-1 min-w-60 bg-gray-100 dark:bg-white min-h-screen p-6 pb-20 max-w-4xl mx-auto">
+      <main className="flex-1 min-w-60 bg-gray-100 min-h-screen p-6 pb-20 max-w-4xl mx-auto">
         {/* Message Modal */}
         {message && (
           <div
@@ -94,7 +94,7 @@ export default function CheckListPage() {
               <button
                 type="button"
                 onClick={() => toggleSection(side.id)}
-                className="w-full text-left p-4 font-bold text-white white bg-gray-700 rounded-t-md hover:bg-gray-200 dark:hover:bg-gray-600 transition"
+                className="w-full text-left p-4 font-bold text-gray-900 bg-gray-200 rounded-t-md hover:bg-gray-300 hover:text-red-500 transition"
               >
                 {side.title}
               </button>
@@ -200,6 +200,6 @@ export default function CheckListPage() {
           </button>
         </div>
       </main>
-    </>
+    </div>
   );
 }
