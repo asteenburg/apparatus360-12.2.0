@@ -3,7 +3,8 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { FaHome, FaClipboardList, FaChartBar, FaCheckCircle, FaClipboardCheck } from 'react-icons/fa';
+import { FaHome, FaClipboardList, FaChartBar, FaCheckCircle, FaClipboardCheck, FaCubes } from 'react-icons/fa';
+import { FaCubesStacked } from 'react-icons/fa6';
 
 export default function Nav() {
   const pathname = usePathname();
@@ -11,6 +12,7 @@ export default function Nav() {
   // Define all your navigation links here
   const links = [
     { href: '/', icon: <FaHome size={20} />, label: 'Home' },
+    { href: '/hub', icon: <FaCubes size={20} />, label: 'Hub' },
     { href: '/checklist', icon: <FaClipboardList size={20} />, label: 'Checklist' },
     { href: '/dashboard', icon: <FaChartBar size={20} />,label: 'Dashboard' }, 
     // Add other links as needed
