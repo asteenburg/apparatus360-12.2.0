@@ -32,9 +32,12 @@ const CHECKLIST_MAP: Record<number, { checklist: ChecklistSide[] }> = {
 };
 
 const TRUCKS = trucksData.trucks;
-const DEFAULT_TRUCK_ID = TRUCKS[0]?.id || 341; 342;
+const DEFAULT_TRUCK_ID = TRUCKS[0]?.id || 341;
 
 export default function useChecklist() {
+  // ------------------------------
+  // State
+  // ------------------------------
   const [selectedTruck, setSelectedTruck] = useState<number>(DEFAULT_TRUCK_ID);
   const [inspectorName, setInspectorName] = useState("");
   const [checklistState, setChecklistState] = useState<ChecklistState>(() =>
@@ -44,11 +47,23 @@ export default function useChecklist() {
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
   const [isSaving, setIsSaving] = useState(false);
 
+  // ------------------------------
+  // Modal state
+  // ------------------------------
+  const [showModal, setShowModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+
+  // ------------------------------
+  // Memoized checklist for selected truck
+  // ------------------------------
   const currentChecklistData = useMemo(
     () => CHECKLIST_MAP[selectedTruck]?.checklist || [],
     [selectedTruck]
   );
 
+  // ------------------------------
+  // Helpers
+  // ------------------------------
   function createInitialChecklistState(data: ChecklistSide[]): ChecklistState {
     const state: ChecklistState = {};
     data.forEach((side) =>
@@ -61,6 +76,9 @@ export default function useChecklist() {
     return state;
   }
 
+  // ------------------------------
+  // Handlers
+  // ------------------------------
   const toggleSection = useCallback((id: string) => {
     setOpenSections((prev) => ({ ...prev, [id]: !prev[id] }));
   }, []);
@@ -104,12 +122,16 @@ export default function useChecklist() {
     setChecklistState(createInitialChecklistState(currentChecklistData));
     setInspectorName("");
     setMessage(null);
+    setShowModal(false);
+    setModalMessage("");
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
     if (!inspectorName.trim()) {
-      setMessage({ type: "error", text: "Inspector Name is required!" });
+      setModalMessage("Inspector Name is required!");
+      setShowModal(true);
       return;
     }
 
@@ -125,10 +147,12 @@ export default function useChecklist() {
       const inspections = JSON.parse(localStorage.getItem("inspections") || "[]");
       inspections.push(inspection);
       localStorage.setItem("inspections", JSON.stringify(inspections));
-      setMessage({ type: "success", text: `Inspection for Truck ${selectedTruck} saved locally!` });
+      setModalMessage(`Inspection for Truck ${selectedTruck} saved locally!`);
+      setShowModal(true);
       setTimeout(handleReset, 2000);
     } catch (err: any) {
-      setMessage({ type: "error", text: err.message || "Local storage error" });
+      setModalMessage(err.message || "Local storage error");
+      setShowModal(true);
     } finally {
       setIsSaving(false);
     }
@@ -136,7 +160,8 @@ export default function useChecklist() {
 
   const exportPDF = () => {
     if (!inspectorName.trim()) {
-      setMessage({ type: "error", text: "Inspector Name required for PDF export." });
+      setModalMessage("Inspector Name required for PDF export.");
+      setShowModal(true);
       return;
     }
 
@@ -203,6 +228,9 @@ export default function useChecklist() {
     pdf.save(`Truck_${selectedTruck}_Inspection_${new Date().toLocaleDateString()}.pdf`);
   };
 
+  // ------------------------------
+  // Return all state and handlers
+  // ------------------------------
   return {
     checklistState,
     currentChecklistData,
@@ -221,5 +249,10 @@ export default function useChecklist() {
     openSections,
     toggleSection,
     TRUCKS,
+    // modal state
+    showModal,
+    setShowModal,
+    modalMessage,
+    setModalMessage,
   };
 }

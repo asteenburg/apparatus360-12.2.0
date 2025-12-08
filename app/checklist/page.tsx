@@ -24,28 +24,38 @@ export default function CheckListPage() {
     isSaving,
     openSections,
     toggleSection,
+    setShowModal,
+    showModal,
+    modalMessage,
   } = useChecklist();
+
+  // Calculate progress
+  const totalItems = Object.keys(checklistState).length;
+  const completedItems = Object.values(checklistState).filter(item => item.status === "OK").length;
+  const progressPercentage = totalItems === 0 ? 0 : (completedItems / totalItems) * 100;
 
   return (
     <div className="bg-gray-100">
       <Nav />
       <main className="flex-1 min-w-60 bg-gray-100 min-h-screen p-6 pb-20 max-w-4xl mx-auto">
-        {/* Message Modal */}
-        {message && (
-          <div
-            className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center p-4"
-            onClick={() => null}
-          >
-            <div
-              className={`p-6 rounded-xl shadow-2xl max-w-sm w-full ${
-                message.type === "success" ? "bg-green-500" : "bg-red-500"
-              } text-white text-center`}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <p className="font-bold text-lg mb-2">
-                {message.type === "success" ? "Success!" : "Error!"}
-              </p>
-              <p>{message.text}</p>
+
+        {/* Modal */}
+        {showModal && (
+          <div className="fixed inset-0 flex items-center justify-center bg-opacity-50 z-50">
+            <div className="relative bg-white rounded-lg shadow-lg p-6 max-w-md w-full">
+              <button
+                onClick={() => setShowModal(false)}
+                className="absolute top-3 right-3 text-gray-500 hover:text-gray-700 text-2xl"
+              >
+                ×
+              </button>
+              <h2 className="text-xl font-semibold mb-4">{modalMessage}</h2>
+              <button
+                onClick={() => setShowModal(false)}
+                className="mt-4 px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+              >
+                Close
+              </button>
             </div>
           </div>
         )}
@@ -73,7 +83,7 @@ export default function CheckListPage() {
         </section>
 
         {/* Inspector Name */}
-        <section className="mb-6">
+        <section className="mb-6 border-b pb-4">
           <label className="block text-gray-800 font-bold mb-2">
             Inspector Name <span className="text-red-500">*</span>
           </label>
@@ -82,9 +92,32 @@ export default function CheckListPage() {
             value={inspectorName}
             onChange={(e) => setInspectorName(e.target.value)}
             placeholder="Enter your full name or ID"
-            className="w-full border border-gray-300 dark:border-gray-600 rounded-sm px-3 py-2 focus:outline-none focus:ring-4 focus:ring-blue-500/50 dark:bg-gray-900 dark:text-white"
+            className="w-full text-sm uppercase border border-gray-300 rounded-sm px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500/50 hover:border-blue-400"
           />
         </section>
+
+        {/* Progress Bar */}
+<section className="mb-6">
+  <label className="block text-gray-700 font-semibold mb-1">Progress</label>
+  <div className="relative w-full bg-gray-300 rounded-full h-6 overflow-hidden">
+    <div
+      className={`h-6 transition-all duration-500 ${
+        progressPercentage <= 33
+          ? "bg-red-500"
+          : progressPercentage <= 66
+          ? "bg-yellow-400"
+          : "bg-green-500"
+      }`}
+      style={{ width: `${progressPercentage}%` }}
+    ></div>
+    <span className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white font-bold text-sm">
+      {progressPercentage.toFixed(1)}%
+    </span>
+  </div>
+  <p className="text-sm text-gray-600 mt-1">
+    {completedItems} of {totalItems} items completed
+  </p>
+</section>
 
         {/* Driver/Passenger Sections */}
         {currentChecklistData.map((side) => {
@@ -100,7 +133,7 @@ export default function CheckListPage() {
               </button>
 
               {isSideOpen && (
-                <div className="pl-4 pt-2 pb-4">
+                <div className="px-2 pt-2 pb-4">
                   {side.compartments.map((compartment) => {
                     const isCompOpen = openSections[compartment.id];
                     return (
@@ -112,7 +145,8 @@ export default function CheckListPage() {
                           type="button"
                           onClick={() => toggleSection(compartment.id)}
                           className="w-full text-left px-4 py-2 font-semibold text-gray-500 rounded-t-sm transition"
-                        ><span className="fa-solid fa-plus p-4"></span>
+                        >
+                          <span className={`fa-solid ${isCompOpen ? "fa-minus" : "fa-plus"} p-4`}></span>
                           {compartment.title}
                         </button>
 
@@ -128,19 +162,13 @@ export default function CheckListPage() {
                                       : "hover:bg-gray-100 dark:hover:bg-gray-600/50"
                                   }`}
                                 >
-
-                                  {/* Checkbox */}
                                   <input
                                     type="checkbox"
                                     checked={checklistState[item]?.status === "OK"}
                                     onChange={(e) => handleCheck(item, e.target.checked)}
                                     className="w-5 h-5 text-green-600 border-gray-300 rounded focus:ring-green-500 dark:bg-gray-900 dark:border-gray-600"
                                   />
-                                  <span className="flex-1 text-gray-700 text-black">
-                                    {item}
-                                  </span>
-
-                                  {/*} Notes Input */}
+                                  <span className="flex-1 text-gray-700">{item}</span>
                                   <input
                                     type="text"
                                     value={checklistState[item]?.notes || ""}
@@ -171,15 +199,15 @@ export default function CheckListPage() {
           <button
             type="submit"
             onClick={handleSubmit}
-            disabled={isSaving || !inspectorName.trim()}
-            className="flex-1 px-4 py-2 bg-red-600 text-white font-bold uppercase rounded-md hover:bg-red-700 transition shadow-lg disabled:opacity-100"
+            disabled={isSaving}
+            className="flex-1 px-2 py-2 bg-red-600 text-white text-sm font-bold uppercase rounded-md hover:bg-red-700 transition shadow-lg disabled:opacity-100"
           >
             {isSaving ? "Saving..." : "Submit"}
           </button>
           <button
             type="button"
             onClick={handleReset}
-            className="flex-1 px-4 py-2 bg-gray-500 text-white font-bold uppercase rounded-md hover:bg-gray-600 transition shadow-md"
+            className="flex-1 px-2 py-2 bg-gray-500 text-white text-sm font-bold uppercase rounded-md hover:bg-gray-600 transition shadow-md"
           >
             Reset Form
           </button>
@@ -187,14 +215,14 @@ export default function CheckListPage() {
             type="button"
             onClick={exportPDF}
             disabled={!inspectorName.trim()}
-            className="flex-1 px-4 py-2 bg-blue-600 text-white font-bold uppercase rounded-md hover:bg-blue-700 transition shadow-lg disabled:opacity-50"
+            className="flex-1 px-2 py-2 bg-blue-600 text-white text-sm font-bold uppercase rounded-md hover:bg-blue-700 transition shadow-lg disabled:opacity-50"
           >
             Export PDF
           </button>
           <button
             type="button"
             onClick={handleSelectAll}
-            className="flex-1 px-4 py-2 bg-green-600 text-white font-bold uppercase rounded-md hover:bg-green-700 transition shadow-lg"
+            className="flex-1 px-2 py-2 bg-green-600 text-white text-sm font-bold uppercase rounded-md hover:bg-green-700 transition shadow-lg"
           >
             Check All
           </button>
