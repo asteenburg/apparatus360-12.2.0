@@ -12,7 +12,6 @@ export default function Nav() {
   // Define all your navigation links here
   const links = [
     { href: '/', icon: <FaHome size={20} />, label: 'Home' },
-    { href: '/hub', icon: <FaCubes size={20} />, label: 'Hub' },
     { href: '/checklist', icon: <FaClipboardList size={20} />, label: 'Checklist' },
     { href: '/dashboard', icon: <FaChartBar size={20} />,label: 'Dashboard' }, 
     // Add other links as needed
