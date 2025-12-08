@@ -10,9 +10,7 @@ export default function InfoCard() {
       </div>
 
       <p className="text-sm text-gray-300">
-        Most of the site was hand-coded such as HTML elements, Tailwind CSS, and some Javascript, but a majority of the complex features
-          were built by leveraging the power of AI to create React and Typescript components within NEXT.js framework. We still take pride in designing every feature to
-          look and function exactly the way we want.
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec finibus arcu a augue mollis, cursus malesuada sapien vestibulum. Donec semper nec erat eget varius. Cras leo erat, hendrerit a nunc eu, posuere cursus eros. Nullam egestas eros quis sapien dapibus commodo. Aenean ac turpis elit. Nunc sed dui nec sem maximus placerat. Donec ut est accumsan, tempus velit ut, condimentum sem.
       </p>
 
       <div className="mt-4 relative h-52">
