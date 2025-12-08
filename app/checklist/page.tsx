@@ -84,8 +84,8 @@ export default function CheckListPage() {
 
         {/* Inspector Name */}
         <section className="mb-6 border-b pb-4">
-          <label className="block text-gray-800 font-bold mb-2">
-            Inspector Name <span className="text-red-500">*</span>
+          <label className=" block text-gray-800 font-bold mb-2">
+            <i className="fa-solid fa-user mr-2 text-gray-900"></i>Inspector Name <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -127,7 +127,7 @@ export default function CheckListPage() {
               <button
                 type="button"
                 onClick={() => toggleSection(side.id)}
-                className="w-full text-left p-4 font-bold text-gray-900 bg-gray-200 rounded-t-md hover:bg-gray-300 hover:text-red-500 transition"
+                className="w-full text-left p-4 font-bold text-gray-900 bg-gray-200 rounded-t-md shadow-lg hover:bg-gray-200 hover:shadow-sm hover:shadow-gray-400/50 transition"
               >
                 {side.title}
               </button>
@@ -139,7 +139,7 @@ export default function CheckListPage() {
                     return (
                       <div
                         key={compartment.id}
-                        className="mb-3 border rounded-sm bg-gray-50 shadow-sm"
+                        className="mb-3 border rounded-sm bg-gray-50 shadow-lg"
                       >
                         <button
                           type="button"
@@ -158,8 +158,8 @@ export default function CheckListPage() {
                                   key={item}
                                   className={`flex items-center gap-3 p-2 rounded-lg ${
                                     checklistState[item]?.status === "OK"
-                                      ? "bg-green-50 dark:bg-green-900/50"
-                                      : "hover:bg-gray-100 dark:hover:bg-gray-600/50"
+                                      ? "bg-green-50 dark:bg-green-600/30 shadow-sm shadow-green-900/50"
+                                      : "hover:bg-gray-300/50 hover:shadow-sm hover:shadow-gray-400/50"
                                   }`}
                                 >
                                   <input
