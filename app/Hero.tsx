@@ -11,7 +11,7 @@ export default function Hero() {
 >
       <div className="absolute inset-0 bg-black opacity-60"></div>
 
-      <div className="relative  text-center max-w-4xl mx-auto px-6 md:pt-24 pt-10 pb-24 lg:mr-96 lg:text-left">
+      <div className="relative  text-center max-w-4xl mx-auto px-6 md:pt-24 pt-8 pb-24 lg:mr-96 lg:text-left">
         <h1 className="text-5xl sm:text-7xl font-extrabold uppercase mb-4 leading-tight">
           Apparatus<span className="text-red-500">360</span>
         </h1>
