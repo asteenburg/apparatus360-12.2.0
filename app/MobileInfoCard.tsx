@@ -2,7 +2,7 @@ export default function MobileInfoCard() {
   return (
     // Mobile version of right-side card
     <section className="lg:hidden mx-auto max-w-xl px-6 py-8">
-      <div className="bg-white rounded-2xl shadow-xl text-left p-6 card-glow overflow-hidden">
+      <div className="bg-white rounded-md shadow-xl text-left p-6 card-glow overflow-hidden">
         <div className="mb-6">
           <h1 className="text-xl text-gray-800 font-extrabold uppercase mb-2 flex items-center">
             <i className="fa-solid fa-fire-flame-curved text-xl pr-3 text-red-500"></i> Built by firefighters
