@@ -11,7 +11,7 @@ export default function Hero() {
 >
       <div className="absolute inset-0 bg-black opacity-60"></div>
 
-      <div className="relative  text-center max-w-4xl mx-auto px-6 md:pt-24 pt-8 pb-24 lg:mr-96 lg:text-left">
+      <div className="relative  md:text-center text-left max-w-4xl mx-auto px-6 md:pt-24 pt-8 pb-24 lg:mr-96 lg:text-left">
         <h1 className="text-5xl sm:text-7xl font-extrabold uppercase mb-4 leading-tight">
           Apparatus<span className="text-red-500">360</span>
         </h1>
@@ -21,10 +21,8 @@ export default function Hero() {
           Streamline operations, ensure safety, and gain insights with ease.
         </p>
         <p>This site was conceptually built with the NEXT.js framework, utilizing React and Typescript to create a checklist and equipment maintenance tracker. 
-
-There is currently no backend support which is why there isn’t an option to sign in or the ability to save historical data. 
-
-In the fire service? I would love to hear your feedback and suggestions for improvements to the UX. I’m currently working on the ability to flag items for NFPA compliance and MoT compliance such as Schedule 1. </p>
+           There is currently no backend support which is why there isn’t an option to sign in or the ability to save historical data. 
+           In the fire service? I would love to hear your feedback and suggestions for improvements to the UX. I’m currently working on the ability to flag items for NFPA compliance and MoT compliance such as Schedule 1. </p>
         {/* This div will hold both buttons/links and manage their layout */}
         <div className="flex flex-col items-center justify-center space-y-4 lg:flex-row lg:space-y-0 lg:space-x-8 lg:justify-start"> 
         
