@@ -16,11 +16,11 @@ export default function Hero() {
           Apparatus<span className="text-red-500">360</span>
         </h1>
 
-        <p className="text-xl sm:text-2xl mb-8 font-light max-w-2xl">
+        <p className="md:text-xl sm:text-xl mb-8 font-light max-w-2xl">
           Your comprehensive solution for truck inspections and fleet management.
           Streamline operations, ensure safety, and gain insights with ease.
         </p>
-        <p className="text-xl sm:text-2xl mb-8 font-light max-w-2xl">This site was conceptually built with the NEXT.js framework, utilizing React and Typescript to create a checklist and equipment maintenance tracker. 
+        <p className="md:text-xl sm:text-xl mb-8 font-light max-w-2xl">This site was conceptually built with the NEXT.js framework, utilizing React and Typescript to create a checklist and equipment maintenance tracker. 
            There is currently no backend support which is why there isn’t an option to sign in or the ability to save historical data. 
            In the fire service? I would love to hear your feedback and suggestions for improvements to the UX. I’m currently working on the ability to flag items for NFPA compliance and MoT compliance such as Schedule 1. </p>
         {/* This div will hold both buttons/links and manage their layout */}
