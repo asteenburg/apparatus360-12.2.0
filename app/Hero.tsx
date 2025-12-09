@@ -24,7 +24,7 @@ export default function Hero() {
            There is currently no backend support which is why there isn’t an option to sign in or the ability to save historical data. 
            In the fire service? I would love to hear your feedback and suggestions for improvements to the UX. I’m currently working on the ability to flag items for NFPA compliance and MoT compliance such as Schedule 1. </p>
         {/* This div will hold both buttons/links and manage their layout */}
-        <div className="flex flex-col items-center justify-center space-y-4 lg:flex-row lg:space-y-0 lg:space-x-8 lg:justify-start"> 
+        <div className="flex flex-col items-center justify-center space-y-4 mt-4 lg:flex-row lg:space-y-0 lg:space-x-8 lg:justify-start"> 
         
           <Link
             href="/hub"
